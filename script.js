@@ -10,9 +10,72 @@ const words = [
   'музыка',
 ];
 
-// Choose a random word
-let word = words[Math.floor(Math.random() * words.length)];
+let guesses = 20;
 
+// function declaration
+const pickWord = function () {
+  return words[Math.floor(Math.random() * words.length)];
+};
+
+const setupAnswerArray = function (word) {
+  const answerArray = [];
+  for (let i = 0; i < word.length; i++) {
+    answerArray[i] = '_';
+  }
+  return answerArray;
+};
+
+const showPlayerProgress = function (answerArray) {
+  return alert(answerArray.join(''));
+};
+
+const getGuess = function () {
+  return prompt('Угадайте букву или нажмите Отмена для выхода из игры.');
+};
+
+const updateGameState = function (guess, word, answerArray) {
+  let appearances = 0;
+  for (let j = 0; j < word.length; j++) {
+    if (word[j] === guess) {
+      answerArray[j] = guess;
+      appearances++;
+    }
+  }
+  console.log(appearances);
+  return appearances;
+};
+
+const showAnswerAndCongratulatePlayer = function (answerArray) {
+  showPlayerProgress(answerArray);
+  alert(`Отлично! Было загадано слово ${word}`);
+};
+
+// word: загагаданное число
+let word = pickWord();
+// answerArray: итоговый массив
+let answerArray = setupAnswerArray(word);
+// remainingLetters: сколько букв осталось угадать
+let remainigLetters = word.length;
+
+while (remainigLetters > 0) {
+  showPlayerProgress(answerArray);
+  //guess: ответ игрока
+  let guess = getGuess();
+  if (guess === null) {
+    break;
+  } else if (guess.length !== 1) {
+    alert('Пожалуйста, введите одиночную букву.');
+  } else {
+    // correctGuesses: количество открытых букв
+    let correctGuesses = updateGameState(guess, word, answerArray);
+    remainigLetters -= correctGuesses;
+  }
+}
+
+showAnswerAndCongratulatePlayer(answerArray);
+// Show answer and congratulate
+
+/*
 // Create array for answer
 const answerArray = [];
 for (let i = 0; i < word.length; i++) {
@@ -59,3 +122,4 @@ if (guesses > 0) {
 } else {
   alert(`Плохо! Было загадано слово ${word}`);
 }
+*/
